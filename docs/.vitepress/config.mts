@@ -12,6 +12,10 @@ export default withMermaid(defineConfig({
     }
   },
 
+  markdown: {
+    math: true
+  },
+
   themeConfig: {
     siteTitle: '🧪 Base Model Lab',
     logo: undefined,
