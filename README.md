@@ -24,9 +24,28 @@ python3 -m venv .venv
 .venv/bin/python -m unittest -v test_train.py
 .venv/bin/python experiment.py --steps 600 --out result --prompt '问题：'
 .venv/bin/python sample.py --model result/model.pt --prompt '问题：' --length 60
+.venv/bin/python chat.py   # 终端交互式打字机流式生成体验
 ```
 
 如果没有 `venv`/`pip`，请先安装对应系统的 Python venv 包。运行 `experiment.py --help` 查看语料、训练轮数、上下文长度和模型宽度参数。提示词只能包含语料中出现过的字符。
+
+## 📖 项目完整技术文档 (VitePress)
+
+项目内置了详尽的 VitePress 交互式文档站点（位于 `docs/` 目录），涵盖网络拓扑、因果掩码数学原理、逐行代码剖析与工业级大模型演进路线：
+
+```bash
+# 进入文档目录
+cd docs
+
+# 安装文档依赖 (已就绪)
+npm install
+
+# 启动本地文档实时预览服务器
+npm run dev
+
+# 构建静态文档站点
+npm run build
+```
 
 ## 本机实测
 

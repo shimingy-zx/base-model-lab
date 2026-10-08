@@ -1,0 +1,17 @@
+{
+  "name": "base-model-lab",
+  "version": "1.0.0",
+  "description": "这不是 ChatGPT 级别的大模型，而是**真实从随机参数开始训练**的字符级、单层、因果注意力 Transformer。适合先理解基座模型的训练闭环。项目未使用任何现成预训练权重，也没有指令微调。",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vitepress": "^1.6.4"
+  }
+}
