@@ -1,9 +1,16 @@
 import { defineConfig } from 'vitepress'
+import { withMermaid } from 'vitepress-plugin-mermaid'
 
-export default defineConfig({
+export default withMermaid(defineConfig({
   lang: 'zh-CN',
   title: 'Base Model Lab',
   description: '从零训练一个迷你基座模型（Mini Transformer Base Model）：动手实验与原理剖析',
+
+  vite: {
+    optimizeDeps: {
+      include: ['mermaid', 'fastdom']
+    }
+  },
 
   themeConfig: {
     siteTitle: '🧪 Base Model Lab',
@@ -103,4 +110,4 @@ export default defineConfig({
       text: '最后更新于'
     }
   }
-})
+}))
