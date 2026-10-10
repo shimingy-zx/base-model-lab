@@ -19,3 +19,13 @@ env/
 node_modules/
 docs/.vitepress/dist/
 docs/.vitepress/cache/
+
+# Experiment results and checkpoints
+result/
+*.pt
+*.pth
+*.ckpt
+
+# Data directory: ignore extra/custom datasets but keep base corpus
+data/*
+!data/corpus.txt

@@ -33,7 +33,8 @@
 
 ```
 base-model-lab/
-├── corpus.txt         # 自编实验用中文语料（411字符，199个不同字符）
+├── data/              # 训练数据目录
+│   └── corpus.txt     # 实验用中文语料文件
 ├── train.py           # 核心代码：分词器、TinyTransformer、训练循环与采样函数
 ├── experiment.py      # 自动化预训练脚本：支持命令行调参、导出权重与评估报告
 ├── sample.py          # 离线快速采样脚本：加载训练好的权重进行文本续写

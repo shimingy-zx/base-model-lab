@@ -9,7 +9,7 @@ from train import CharTokenizer, TinyTransformer, train_steps, generate
 
 def main():
     parser = argparse.ArgumentParser(description='用 CPU 从随机参数训练一个教学用字符级基座模型')
-    parser.add_argument('--corpus', type=Path, default=Path(__file__).with_name('corpus.txt'))
+    parser.add_argument('--corpus', type=Path, default=Path(__file__).parent / 'data' / 'corpus.txt')
     parser.add_argument('--out', type=Path, default=Path(__file__).with_name('result'))
     parser.add_argument('--steps', type=int, default=350)
     parser.add_argument('--block-size', type=int, default=32)

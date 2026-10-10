@@ -56,7 +56,7 @@ OK
 
 ## 🚀 第三步：运行从零预训练实验
 
-执行 `experiment.py`，模型将随机初始化权重，并在 `corpus.txt` 上进行 600 次梯度更新：
+执行 `experiment.py`，模型将随机初始化权重，并在 `data/corpus.txt` 上进行 600 次梯度更新：
 
 ```bash
 python experiment.py --steps 600 --out result --prompt '问题：'
@@ -103,7 +103,7 @@ python sample.py --model result/model.pt --prompt '雨停了，' --length 50
 
 | 参数 | 类型 | 默认值 | 作用说明 |
 | :--- | :--- | :--- | :--- |
-| `--corpus` | Path | `corpus.txt` | 训练使用的文本语料文件路径 |
+| `--corpus` | Path | `data/corpus.txt` | 训练使用的文本语料文件路径 |
 | `--out` | Path | `result` | 模型权重及结果 JSON 的输出目录 |
 | `--steps` | int | `350` | 梯度更新训练步数 |
 | `--block-size` | int | `32` | 模型的最大上下文滑动窗口长度 |
