@@ -19,33 +19,32 @@ def stream_generate(model, tokenizer, prompt, max_new_tokens=60, temperature=0.8
             yield tokenizer.chars[next_token.item()]
 
 
-def main():
-    parser = argparse.ArgumentParser(description='在终端交互体验训练好的迷你基座模型')
-    parser.add_argument('--model', type=Path, default=Path(__file__).with_name('result') / 'model.pt',
-                        help='模型权重路径 (默认: result/model.pt)')
-    parser.add_argument('--length', type=int, default=60, help='默认生成长度 (字符数)')
-    parser.add_argument('--temp', type=float, default=0.8, help='采样温度 (temperature)')
-    args = parser.parse_args()
+def run_chat(model_path=None, length=60, temp=0.8):
+    if model_path is None:
+        model_path = Path(__file__).with_name('result') / 'model.pt'
+    else:
+        model_path = Path(model_path)
 
-    if not args.model.exists():
-        print(f"❌ 找不到模型权重文件: {args.model}")
-        print("请先运行实验训练模型: python3 experiment.py")
-        sys.exit(1)
+    if not model_path.exists():
+        print(f"❌ 找不到模型权重文件: {model_path}")
+        print("请先运行实验训练模型: python lab.py train 或 python experiment.py")
+        return 1
 
     torch.set_num_threads(1)
-    checkpoint = torch.load(args.model, map_location='cpu', weights_only=True)
+    checkpoint = torch.load(model_path, map_location='cpu', weights_only=True)
     chars = ''.join(checkpoint['chars'])
     tokenizer = CharTokenizer(chars)
     model = TinyTransformer(len(tokenizer.chars), checkpoint['block_size'],
                             checkpoint['width'], checkpoint['heads'])
     model.load_state_dict(checkpoint['state_dict'])
 
-    max_len = args.length
-    temperature = args.temp
+    max_len = length
+    temperature = temp
 
     print("=" * 60)
     print("🤖 迷你基座语言模型 - 终端交互体验")
     print("=" * 60)
+
     print(f"• 模型参数量: {sum(p.numel() for p in model.parameters()):,} 个")
     print(f"• 词表大小: {len(tokenizer.chars)} 个字符")
     print(f"• 当前设置: 生成长度={max_len}, 温度={temperature}")
@@ -126,5 +125,16 @@ def main():
             print(f"\n❌ 生成时发生错误: {e}")
 
 
+def main():
+    parser = argparse.ArgumentParser(description='在终端交互体验训练好的迷你基座模型')
+    parser.add_argument('--model', type=Path, default=Path(__file__).with_name('result') / 'model.pt',
+                        help='模型权重路径 (默认: result/model.pt)')
+    parser.add_argument('--length', type=int, default=60, help='默认生成长度 (字符数)')
+    parser.add_argument('--temp', type=float, default=0.8, help='采样温度 (temperature)')
+    args = parser.parse_args()
+    sys.exit(run_chat(args.model, length=args.length, temp=args.temp) or 0)
+
+
 if __name__ == '__main__':
     main()
+

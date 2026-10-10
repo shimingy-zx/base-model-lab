@@ -697,6 +697,47 @@ def generate_html(data):
 """
 
 
+def run_visualize(model_path=None, prompt='陆向谦实验室', out_path=None, no_open=False):
+    if model_path is None:
+        model_path = Path(__file__).with_name('result') / 'model.pt'
+    else:
+        model_path = Path(model_path)
+
+    if out_path is None:
+        out_path = Path(__file__).with_name('result') / 'visualize.html'
+    else:
+        out_path = Path(out_path)
+
+    if not model_path.exists():
+        raise FileNotFoundError(f'模型权重文件不存在：{model_path}，请先训练模型。')
+
+    torch.set_num_threads(1)
+    print(f'正在加载模型权重：{model_path} ...')
+    checkpoint = torch.load(model_path, map_location='cpu', weights_only=True)
+    tokenizer = CharTokenizer(''.join(checkpoint['chars']))
+    model = TinyTransformer(len(tokenizer.chars), checkpoint['block_size'], checkpoint['width'], checkpoint['heads'])
+    model.load_state_dict(checkpoint['state_dict'])
+
+    print(f'正在计算注意力权重与向量空间 (Prompt: "{prompt}")...')
+    data = extract_data(model, tokenizer, prompt, checkpoint['block_size'], checkpoint['width'], checkpoint['heads'])
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    html_content = generate_html(data)
+    out_path.write_text(html_content, encoding='utf-8')
+
+    print('\n==================== 可视化报告已生成 ====================')
+    print(f'总参数量：{data["total_params"]:,}')
+    print(f'词表大小：{data["vocab_size"]} 字符')
+    print(f'测试提示词："{data["prompt"]}" ({len(data["prompt_tokens"])} tokens)')
+    print(f'报告路径：file://{out_path.resolve()}')
+    print('=========================================================\n')
+
+    if not no_open:
+        print('正在启动默认浏览器打开可视化页面...')
+        webbrowser.open(out_path.resolve().as_uri())
+    return out_path
+
+
 def main():
     parser = argparse.ArgumentParser(description='可视化已训练的小模型权重、注意力矩阵与词向量')
     parser.add_argument('--model', type=Path, default=Path(__file__).with_name('result') / 'model.pt')
@@ -705,34 +746,12 @@ def main():
     parser.add_argument('--no-open', action='store_true', help='生成后不自动在浏览器中打开')
     args = parser.parse_args()
 
-    if not args.model.exists():
-        parser.error(f'模型权重文件不存在：{args.model}，请先运行 experiment.py 训练模型。')
-
-    torch.set_num_threads(1)
-    print(f'正在加载模型权重：{args.model} ...')
-    checkpoint = torch.load(args.model, map_location='cpu', weights_only=True)
-    tokenizer = CharTokenizer(''.join(checkpoint['chars']))
-    model = TinyTransformer(len(tokenizer.chars), checkpoint['block_size'], checkpoint['width'], checkpoint['heads'])
-    model.load_state_dict(checkpoint['state_dict'])
-
-    print(f'正在计算注意力权重与向量空间 (Prompt: "{args.prompt}")...')
-    data = extract_data(model, tokenizer, args.prompt, checkpoint['block_size'], checkpoint['width'], checkpoint['heads'])
-
-    args.out.parent.mkdir(parents=True, exist_ok=True)
-    html_content = generate_html(data)
-    args.out.write_text(html_content, encoding='utf-8')
-
-    print('\n==================== 可视化报告已生成 ====================')
-    print(f'总参数量：{data["total_params"]:,}')
-    print(f'词表大小：{data["vocab_size"]} 字符')
-    print(f'测试提示词："{data["prompt"]}" ({len(data["prompt_tokens"])} tokens)')
-    print(f'报告路径：file://{args.out.resolve()}')
-    print('=========================================================\n')
-
-    if not args.no_open:
-        print('正在启动默认浏览器打开可视化页面...')
-        webbrowser.open(args.out.resolve().as_uri())
+    try:
+        run_visualize(model_path=args.model, prompt=args.prompt, out_path=args.out, no_open=args.no_open)
+    except FileNotFoundError as err:
+        parser.error(str(err))
 
 
 if __name__ == '__main__':
     main()
+

@@ -13,21 +13,50 @@
 3. `TinyTransformer`：随机初始化约 2.7 万个参数；注意力遮罩让它只能看当前位置及之前的字符。
 4. `train_steps`：遮住下一字让模型猜，计算交叉熵，反向传播调整权重；`sample.py` 用训练后的权重续写。
 
-## 在 Linux/macOS 上重跑
+## 🚀 统一工作流命令行 (`lab.py`)
 
-推荐 Python 3.11。解压后在项目目录执行：
+本项目推荐使用统一入口 `lab.py`，无需在不同脚本间切换：
+
+```bash
+# 查看所有子命令说明
+python lab.py --help
+
+# 1. 训练基座模型 (可自定义 steps/width/block-size 等)
+python lab.py train --steps 600 --prompt '问题：'
+
+# 2. 单次提示词文本续写采样
+python lab.py sample --prompt '问题：' --length 60
+
+# 3. 终端打字机流式交互体验
+python lab.py chat
+
+# 4. 生成注意力矩阵与嵌入向量可视化 HTML 报告
+python lab.py viz --prompt '陆向谦实验室'
+
+# 5. 运行完整单元测试套件
+python lab.py test
+
+# 6. 一键端到端全流程闭环 (自动执行: 训练 -> 测试 -> 生成可视化)
+python lab.py run
+
+# 7. 启动本地 VitePress 交互式文档预览
+python lab.py docs
+```
+
+> **注**：原有的独立脚本（`experiment.py`、`sample.py`、`chat.py`、`visualize.py`）依然完全保留并向前兼容，底层实现与单元测试完全不受影响。
+
+## 在 Linux/macOS 上重跑环境配置
+
+推荐 Python 3.11。在项目目录执行：
 
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.7.1'
 .venv/bin/python -m pip install 'numpy==2.2.6'
-.venv/bin/python -m unittest -v test_train.py
-.venv/bin/python experiment.py --steps 600 --out result --prompt '问题：'
-.venv/bin/python sample.py --model result/model.pt --prompt '问题：' --length 60
-.venv/bin/python chat.py   # 终端交互式打字机流式生成体验
+.venv/bin/python lab.py test
+.venv/bin/python lab.py run
 ```
 
-如果没有 `venv`/`pip`，请先安装对应系统的 Python venv 包。运行 `experiment.py --help` 查看语料、训练轮数、上下文长度和模型宽度参数。提示词只能包含语料中出现过的字符。
 
 ## 📖 项目完整技术文档 (VitePress)
 

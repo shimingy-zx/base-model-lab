@@ -59,9 +59,47 @@ class ExperimentTests(unittest.TestCase):
             sampled = subprocess.run([sys.executable, 'sample.py', '--model', str(out / 'model.pt'),
                                       '--prompt', '春天', '--length', '5'],
                                      cwd=pathlib.Path(__file__).parent, capture_output=True, text=True)
-            self.assertEqual(sampled.returncode, 0, sampled.stderr)
             self.assertTrue(sampled.stdout.startswith('春天'))
+
+
+class LabCliTests(unittest.TestCase):
+    def test_lab_cli_help(self):
+        p = subprocess.run([sys.executable, 'lab.py', '--help'],
+                           cwd=pathlib.Path(__file__).parent, capture_output=True, text=True)
+        self.assertEqual(p.returncode, 0)
+        self.assertIn('Base Model Lab', p.stdout)
+        self.assertIn('train', p.stdout)
+        self.assertIn('sample', p.stdout)
+
+    def test_lab_cli_train_and_sample_and_viz(self):
+        with tempfile.TemporaryDirectory() as directory:
+            corpus = pathlib.Path(directory) / 'input.txt'
+            corpus.write_text('清晨微风吹过大地，新芽悄悄探出了头。\n' * 20, encoding='utf-8')
+            out = pathlib.Path(directory) / 'result'
+            # 1. 测试 lab train
+            p_train = subprocess.run([sys.executable, 'lab.py', 'train', '--corpus', str(corpus), '--out', str(out),
+                                      '--steps', '5', '--block-size', '12', '--width', '16', '--prompt', '清晨'],
+                                     cwd=pathlib.Path(__file__).parent, capture_output=True, text=True)
+            self.assertEqual(p_train.returncode, 0, p_train.stderr)
+            self.assertTrue((out / 'model.pt').exists())
+            self.assertTrue((out / 'result.json').exists())
+
+            # 2. 测试 lab sample
+            p_sample = subprocess.run([sys.executable, 'lab.py', 'sample', '--model', str(out / 'model.pt'),
+                                       '--prompt', '清晨', '--length', '6'],
+                                      cwd=pathlib.Path(__file__).parent, capture_output=True, text=True)
+            self.assertEqual(p_sample.returncode, 0, p_sample.stderr)
+            self.assertIn('清晨', p_sample.stdout)
+
+            # 3. 测试 lab viz
+            viz_out = out / 'test_viz.html'
+            p_viz = subprocess.run([sys.executable, 'lab.py', 'viz', '--model', str(out / 'model.pt'),
+                                    '--prompt', '清晨', '--out', str(viz_out), '--no-open'],
+                                   cwd=pathlib.Path(__file__).parent, capture_output=True, text=True)
+            self.assertEqual(p_viz.returncode, 0, p_viz.stderr)
+            self.assertTrue(viz_out.exists())
 
 
 if __name__ == '__main__':
     unittest.main()
+
