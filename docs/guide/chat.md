@@ -4,9 +4,16 @@
 
 ## 🌟 启动方式
 
-在模型训练完成后（确认已存在 `result/model.pt`），直接运行：
+在模型训练完成后（确认已存在 `result/model.pt`），可通过以下任意一种方式启动交互：
 
 ```bash
+# 推荐统一入口
+python lab.py chat
+
+# 或极简快捷指令
+make chat
+
+# 或直接运行底层脚本
 python chat.py
 ```
 

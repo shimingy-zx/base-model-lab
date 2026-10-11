@@ -35,6 +35,7 @@ export default withMermaid(defineConfig({
         items: [
           { text: '项目简介与定位', link: '/guide/intro' },
           { text: '快速上手复现', link: '/guide/quickstart' },
+          { text: '统一命令行与 Makefile', link: '/guide/cli' },
           { text: '终端交互体验', link: '/guide/chat' }
         ]
       },

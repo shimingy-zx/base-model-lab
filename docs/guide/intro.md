@@ -33,16 +33,20 @@
 
 ```
 base-model-lab/
-├── data/              # 训练数据目录
-│   └── corpus.txt     # 实验用中文语料文件
-├── train.py           # 核心代码：分词器、TinyTransformer、训练循环与采样函数
+├── lab.py             # 统一工作流入口：集成训练、采样、交互、可视化、单测与文档
+├── Makefile           # 极简快捷指令集：一键 make train / make run / make chat 等
+├── train.py           # 核心模型实现：分词器、TinyTransformer、训练循环与采样函数
 ├── experiment.py      # 自动化预训练脚本：支持命令行调参、导出权重与评估报告
 ├── sample.py          # 离线快速采样脚本：加载训练好的权重进行文本续写
 ├── chat.py            # 终端流式交互工具：支持打字机动画、实时调温与指令控制
+├── visualize.py       # 权重与注意力可视化：导出交互式 HTML 分析报告
 ├── test_train.py      # 单元测试套件：包含因果掩码防未来穿越等关键数学单测
+├── data/              # 训练数据目录
+│   └── corpus.txt     # 实验用中文语料文件
 ├── result/            # 训练产物目录
 │   ├── model.pt       # 训练保存的模型权重 Checkpoint
-│   └── result.json    # 训练前后损失、参数量与生成样例记录
+│   ├── result.json    # 训练前后损失、参数量与生成样例记录
+│   └── visualize.html # 生成的模型注意力与嵌入向量可视化网页
 └── docs/              # 基于 VitePress 构建的完整技术与原理文档
 ```
 

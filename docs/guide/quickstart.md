@@ -34,7 +34,10 @@ pip install 'numpy==2.2.6'
 在动手训练之前，强烈推荐先运行单元测试，确保分词器、注意力掩码与梯度下降逻辑全部正常：
 
 ```bash
-python -m unittest -v test_train.py
+# 推荐使用统一入口
+python lab.py test
+# 或快捷指令: make test
+# 或底层原生调用: python -m unittest -v test_train.py
 ```
 
 预期输出示例：
@@ -56,10 +59,13 @@ OK
 
 ## 🚀 第三步：运行从零预训练实验
 
-执行 `experiment.py`，模型将随机初始化权重，并在 `data/corpus.txt` 上进行 600 次梯度更新：
+执行预训练，模型将随机初始化约 2.7 万个参数，并在 `data/corpus.txt` 上进行梯度反向传播：
 
 ```bash
-python experiment.py --steps 600 --out result --prompt '问题：'
+# 推荐使用统一入口
+python lab.py train --steps 600 --prompt '问题：'
+# 或快捷指令: make train
+# 或底层原生调用: python experiment.py --steps 600 --out result --prompt '问题：'
 ```
 
 运行完成后，终端将打印训练报告 JSON，并将权重保存至 `result/model.pt`：
@@ -83,10 +89,13 @@ python experiment.py --steps 600 --out result --prompt '问题：'
 
 ## 🖨️ 第四步：离线生成采样
 
-使用 `sample.py`，指定不同的初始 Prompt 和生成长度：
+指定不同的初始 Prompt 和生成长度，检验模型的续写能力：
 
 ```bash
-python sample.py --model result/model.pt --prompt '雨停了，' --length 50
+# 推荐使用统一入口
+python lab.py sample --prompt '雨停了，' --length 50
+# 或快捷指令: make sample
+# 或底层原生调用: python sample.py --model result/model.pt --prompt '雨停了，' --length 50
 ```
 
 输出示例：
@@ -94,6 +103,22 @@ python sample.py --model result/model.pt --prompt '雨停了，' --length 50
 雨停了，院子里的石板还有水光。小猫沿着墙边走，闻了闻一片落叶。
 清晨，学生打开书本。
 ```
+
+---
+
+## ⚡ 进阶技巧：一键端到端全流程闭环
+
+如果你希望快速执行 **训练 → 单元测试 → 可视化报告生成** 的全套闭环流程，无需逐步输入命令，直接运行：
+
+```bash
+# 统一工作流全自动运行
+python lab.py run
+
+# 或使用 Makefile
+make run
+```
+
+更多关于 `lab.py` 的子命令选项（如可视化 `lab.py viz`、文档服务 `lab.py docs`）以及 `Makefile` 的快捷语法，请参阅 [统一命令行与 Makefile](/guide/cli)。
 
 ---
 
