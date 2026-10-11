@@ -2,6 +2,7 @@ import { defineConfig } from 'vitepress'
 import { withMermaid } from 'vitepress-plugin-mermaid'
 
 export default withMermaid(defineConfig({
+  base: '/base-model-lab/',
   lang: 'zh-CN',
   title: 'Base Model Lab',
   description: '从零训练一个迷你基座模型（Mini Transformer Base Model）：动手实验与原理剖析',
