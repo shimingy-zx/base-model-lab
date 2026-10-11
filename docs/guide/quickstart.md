@@ -4,25 +4,30 @@
 
 ## 📋 环境准备
 
+- **代码仓库**: [GitHub (shimingy-zx/base-model-lab)](https://github.com/shimingy-zx/base-model-lab.git)
 - **操作系统**: macOS / Linux / Windows (WSL 推荐)
 - **Python 版本**: 推荐 Python 3.10 或 3.11
 - **算力要求**: 普通 CPU 即可，内存消耗极低（< 200MB）
 
 ---
 
-## 🛠️ 第一步：创建虚拟环境并安装依赖
+## 🛠️ 第一步：获取代码与环境准备
 
-在项目根目录下打开终端，执行以下命令：
+在终端执行以下命令：
 
 ```bash
-# 1. 创建虚拟环境
+# 1. 克隆代码仓库并进入目录
+git clone https://github.com/shimingy-zx/base-model-lab.git
+cd base-model-lab
+
+# 2. 创建虚拟环境
 python3 -m venv .venv
 
-# 2. 激活虚拟环境 (macOS/Linux)
+# 3. 激活虚拟环境 (macOS/Linux)
 source .venv/bin/activate
 # Windows PowerShell 请使用: .venv\Scripts\Activate.ps1
 
-# 3. 安装纯 CPU 版本的 PyTorch 与 NumPy (极快，无需下载庞大 CUDA 包)
+# 4. 安装纯 CPU 版本的 PyTorch 与 NumPy (极快，无需下载庞大 CUDA 包)
 pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.7.1'
 pip install 'numpy==2.2.6'
 ```

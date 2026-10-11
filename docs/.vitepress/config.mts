@@ -29,6 +29,10 @@ export default withMermaid(defineConfig({
       { text: '进阶演进', link: '/advanced/scaling' }
     ],
 
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/shimingy-zx/base-model-lab' }
+    ],
+
     sidebar: [
       {
         text: '📖 项目指南',
@@ -102,8 +106,13 @@ export default withMermaid(defineConfig({
       }
     },
 
+    editLink: {
+      pattern: 'https://github.com/shimingy-zx/base-model-lab/edit/main/docs/:path',
+      text: '在 GitHub 上编辑此页'
+    },
+
     footer: {
-      message: '基于 MIT 协议开放 · 从零理解大语言模型训练本质',
+      message: '基于 MIT 协议开放 · 从零理解大语言模型训练本质 · <a href="https://github.com/shimingy-zx/base-model-lab" target="_blank" rel="noopener noreferrer">GitHub 仓库</a>',
       copyright: 'Copyright © 2026 Base Model Lab'
     },
 

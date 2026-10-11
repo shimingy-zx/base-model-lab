@@ -15,6 +15,9 @@ hero:
     - theme: alt
       text: 终端流式体验
       link: /guide/chat
+    - theme: alt
+      text: GitHub 源码
+      link: https://github.com/shimingy-zx/base-model-lab
 
 features:
   - icon: 🔬

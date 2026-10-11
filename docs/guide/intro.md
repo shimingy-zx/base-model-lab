@@ -59,3 +59,11 @@ base-model-lab/
 2. **不能处理未见字符（OOV）**：由于采用基于字符的极简分词表，输入提示词如果包含语料中从未出现过的字符，分词器会直接拦截报错。
 3. **教学实验定位**：本项目的最大价值是**帮助学习者用最小认知成本、在自己的电脑上运行并亲手拆解预训练的每一行代码与张量形状**。
 :::
+
+---
+
+## 🔗 开源仓库与协议
+
+- **GitHub 源码**: [https://github.com/shimingy-zx/base-model-lab](https://github.com/shimingy-zx/base-model-lab.git)
+- **开源协议**: [MIT License](https://github.com/shimingy-zx/base-model-lab/blob/main/LICENSE)
+
